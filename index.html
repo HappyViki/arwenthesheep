@@ -1,0 +1,267 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jest Code</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+body {
+	font-family: 'Lobster';font-size: 22px;
+}
+h1 {
+	color: #abc;
+	margin:5px 0px 10px 0px;
+	padding:0px;
+}
+#text {
+	color: #abc;
+	height: 32px;
+	margin: 8px 0px;
+}
+#textCase {
+	width: 400px;
+}
+
+.parent {
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+}
+
+#game, #textCase {
+	background: #123;
+}
+
+#counter {
+	margin-right: 50px;
+	margin-left: 50px;
+}
+
+.on {
+	opacity: .7;
+}
+
+#btn0 {
+	background-color: #00b800; /* Green */
+}
+#btn1 {
+	background-color: #0000b8; /* Blue */
+	/* Rotate div */
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+	transform: rotate(90deg);
+}
+#btn2 {
+	background-color: #b88a00; /* Yellow */
+	/* Rotate div */
+	-ms-transform: rotate(270deg); /* IE 9 */
+	-webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+	transform: rotate(270deg);
+}
+#btn3 {
+  background-color: #b80000; /* Red */
+    /* Rotate div */
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+}
+
+.sheeple {
+  border: none;
+  color: #000;
+    text-shadow: 4px 4px #f44;
+    background: #ffa;
+  margin: 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+
+    width: 150px;
+    height: 150px;
+    background-image: url(http://vvv.rent-a-mind.com/projects/bah-bah-arwen/arwen.png);
+    background-repeat: no-repeat;
+}
+.sheeple:hover {
+    color:#fff;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.sheeple:active {
+    background-image: url(http://vvv.rent-a-mind.com/projects/bah-bah-arwen/arwen.png);
+    background-repeat: no-repeat;
+}
+#face {
+    width: 200px;
+    height: 200px;
+margin: 100px;
+    background: #123;
+    position: absolute;
+display: inline;
+    z-index: 1;
+}
+#face .btn {
+background: #fff;
+}
+@media screen and (max-width: 500px) {
+.sheeple {
+width: 100px;
+height: 100px;
+}
+#face {
+width: 150px;
+height: 150px;
+margin: 75px;
+}
+h1 {
+font-size: 24px;
+}
+#face .btn {
+font-size: 10px;
+margin: 4px;
+}
+#counter {
+margin-bottom: 4px;
+}
+#textCase {
+width: 300px;
+}
+}
+</style>
+</head>
+<body>
+
+<audio id="0">
+  <source src="http://vvv.rent-a-mind.com/projects/bah-bah-arwen/audio/meh0.m4a" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<audio id="1">
+  <source src="http://vvv.rent-a-mind.com/projects/bah-bah-arwen/audio/meh1.m4a" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<audio id="2">
+  <source src="http://vvv.rent-a-mind.com/projects/bah-bah-arwen/audio/meh2.m4a" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<audio id="3">
+  <source src="http://vvv.rent-a-mind.com/projects/bah-bah-arwen/audio/meh3.m4a" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div class="parent">
+  <div id="textCase" class="panel">
+    <div id="text" class="text-center"></div>
+  </div>
+</div>
+
+
+<div class="parent">
+  <div id="game" class="panel">
+    <div id="face" class="panel text-center">
+      <h1>bah bah</br>Arwen</h1>
+      <div id="counter" class="panel" title="reset">--</div>
+      <button id="start" class="btn">Start</button>
+      <button id="strict" class="btn off">Strict</button>
+    </div>
+  <div>
+  <button id="btn0" class="btn sheeple"></button><button id="btn1" class="btn sheeple"></button>
+</div>
+<div>
+      <button id="btn2" class="btn sheeple"></button><button id="btn3" class="btn sheeple"></button>
+</div>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+  // Set up.
+  var arr = [];
+  var tracker = 0;
+
+  $("#strict").click(function() {
+    $("#strict").toggleClass("off on");
+  });
+
+  function clearText() {
+    setTimeout(function() {
+      $("#text").text("");
+    }, 2000);
+  }
+  function runLights() {
+    (function myLoop(i) {
+      setTimeout(function() {
+        var lightUp = "#btn" + arr[i - 1];
+        document.getElementById(arr[i - 1]).play();
+        $(lightUp).css("opacity", ".5");
+        setTimeout(function() {
+          $(lightUp).css("opacity", "1");
+        }, 1000);
+        if (--i) myLoop(i);
+      }, 1000);
+    })(arr.length);
+  }
+
+  function reset() {
+    arr = [Math.floor(Math.random() * 4)];
+    tracker = arr.length;
+    $("#counter").text(tracker);
+    clearText();
+    runLights();
+  }
+
+  function checkRight(clicked) {
+    if (clicked === arr[tracker - 1]) tracker--;
+    else {
+      if ($("#strict").hasClass("on")) {
+        $("#text").text("You lose!");
+        reset();
+      } else {
+        $("#text").text("Try again!");
+        tracker = arr.length;
+        clearText();
+        runLights();
+      }
+    }
+
+    if (tracker === 0) {
+      if (arr.length >= 20) {
+        $("#text").text("You win!");
+        setTimeout(function() {
+          reset();
+        }, 3000);
+        return;
+      }
+      arr.unshift(Math.floor(Math.random() * 4));
+      tracker = arr.length;
+      $("#text").text("Next round!");
+      $("#counter").text(tracker);
+      clearText();
+      runLights();
+    }
+  }
+
+  $("#start").click(function() {
+    clearText();
+    reset();
+  });
+
+  $(".btn").click(function() {
+    if (arr.length > 0) {
+      var id = parseInt(this.id[3]);
+      document.getElementById(id).play();
+      checkRight(id);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
